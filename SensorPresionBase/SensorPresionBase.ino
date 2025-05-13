@@ -31,8 +31,14 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  unsigned int valorSensor = analogRead(SENSOR_PIN);
-  unsigned int maxEncender = map(valorSensor, 0, 1023, 0, NUM_LEDS);
+  unsigned float presion = bmp.readPressure() / 100;
+
+  //calcular diferéncia respecto a la presión base
+  unsigned float dif = presionBase - presion;
+
+  //mapear el cambio de leds según la presión
+  din = constrain(dif, 0, 5); //limitar el valor para evitar errores
+  unsigned int maxEncender = map(dif * 100, 0, 500, 0, NUM_LEDS); //multiplicar por 100 porque map() requiere enteros
 
   if(index < maxEncender && index < NUM_LEDS){
     unsigned int tono = map(index, 0, NUM_LEDS -1, 0, 96);
