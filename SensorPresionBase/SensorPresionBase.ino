@@ -16,8 +16,18 @@ Adafruit_BMP280 bmp;
 unsigned float presionBase = 0;
 unsigned int index = 0;
 
+//electroimanes
+#define ELECTROIMAN_1 9
+#define ELECTROIMAN_2 8
+
 void setup() {
   // put your setup code here, to run once:
+  //electroimanes
+  pinMode(ELECTROIMAN_1, OUTPUT);
+  pinMode(ELECTROIMAN_2, OUTPUT);
+  digitalWrite(ELECTROIMAN_1, LOW); //iniciarlos en bajo
+  digitalWrite(ELECTROIMAN_2, LOW);
+  //comunicación serial
   Serial.begin(9600);
   //FastLED
   FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS);
@@ -50,6 +60,7 @@ void loop() {
       leds[index] = CRGB::Black;
       index--;
     }
+
 
     FastLED.show();
     delay(800);
