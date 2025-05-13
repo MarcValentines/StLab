@@ -13,7 +13,7 @@ CRGB leds[NUM_LEDS];
 //sensor
 Adafruit_BMP280 bmp;
 #define SENSOR_PIN A0
-unsigned float presionBase = 0;
+float presionBase = 0;
 unsigned int index = 0;
 
 //electroimanes
@@ -42,11 +42,17 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if(sensorDisponible){
-    unsigned float presion = bmp.readPressure() / 100;
 
+  if(sensorDisponible){
+    float presion = bmp.readPressure() / 100;
+    //parpadeo primer led mientras no se sopla
+    if (index == 0 && presion < 1.0){
+      indicarJuegoActivo();
+      delay(500);
+      return;
+    }
     //calcular diferéncia respecto a la presión base
-    unsigned float dif = presionBase - presion;
+    float dif = presionBase - presion;
 
     //mapear el cambio de leds según la presión
     din = constrain(dif, 0, 5); //limitar el valor para evitar errores
@@ -61,8 +67,20 @@ void loop() {
       index--;
     }
 
+    if(index => NUM_LEDS){
+      digitalWrite(ELECTROIMAN_1, HIGH);
+      digitalWrite(ELECTROIMAN_2, HIGH);
+    }
 
     FastLED.show();
     delay(800);
   }
+}
+
+void indicarJuegoActivo(){
+  static bool estado = false
+
+  leds[0] = estado ? CRGB::Blue : CRGB::Black;
+  FastLED.show();
+  estado = !estado;
 }
