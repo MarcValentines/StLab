@@ -41,7 +41,7 @@ void loop() {
   unsigned int maxEncender = map(dif * 100, 0, 500, 0, NUM_LEDS); //multiplicar por 100 porque map() requiere enteros
 
   if(index < maxEncender && index < NUM_LEDS){
-    unsigned int tono = map(index, 0, NUM_LEDS -1, 0, 96);
+    uint8_t tono = map(index, 0, NUM_LEDS -1, 0, 96);
     leds[index] = CHSV(tono, 255, 255);
     index++;
   } else if (index > maxEncender && index > 0){
