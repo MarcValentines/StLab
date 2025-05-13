@@ -5,7 +5,7 @@
 //leds
 #define LED_PIN 6
 #define NUM_LEDS 64
-#define LED_TYPE SK6812
+#define LED_TYPE WS2815
 #define COLOR_ORDER GRB
 
 CRGB leds[NUM_LEDS];
@@ -49,7 +49,7 @@ void loop() {
     if (index == 0 && presion < 1.0){
       indicarJuegoActivo();
       delay(500);
-      return;
+      return; //salir del loop aquí y no ejecutar el resto del código
     }
     //calcular diferéncia respecto a la presión base
     float dif = presionBase - presion;
@@ -80,7 +80,7 @@ void loop() {
 void indicarJuegoActivo(){
   static bool estado = false
 
-  leds[0] = estado ? CRGB::Blue : CRGB::Black;
+  leds[0] = estado ? CRGB::Blue : CRGB::Black; //alterar entre azul y apagado
   FastLED.show();
-  estado = !estado;
+  estado = !estado; //cambiar estado para la proxima llamada
 }
