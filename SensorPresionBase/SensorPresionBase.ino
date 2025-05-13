@@ -1,4 +1,7 @@
 #include <FastLED.h>
+#include <Wire.h>
+#include <Adafruit_BMP280.h>
+
 //leds
 #define LED_PIN 6
 #define NUM_LEDS 19
@@ -8,14 +11,22 @@
 CGRB leds[NUM_LEDS];
 
 //sensor
+Adafruit_BMP280 bmp;
 #define SENSOR_PIN A0
+unsigned float presionBase = 0;
 unsigned int index = 0;
 
 void setup() {
   // put your setup code here, to run once:
-  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS);
   Serial.begin(9600);
-  FastLED.setBrightness(120);
+  //FastLED
+  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS);
+  FastLED.setBrightness(120);+
+  fill_solid(leds, NUM_LEDS, CRGB::Black);
+  FastLED.show();
+  //Sensor
+  delay(500);
+  presionBase = bmp.readPreassure() / 100; // en hPa
 }
 
 void loop() {
